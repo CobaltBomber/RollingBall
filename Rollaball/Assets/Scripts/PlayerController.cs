@@ -9,8 +9,9 @@ public class PlayerController : MonoBehaviour
 {
     public float speed = 0;
     public TextMeshProUGUI countText;
-    public GameObject winTextObject;
-    public GameObject lostTextObject;
+    public GameObject winText;
+    public TextMeshProUGUI loseText;
+    
 
     private Rigidbody rb;
     private int count;
@@ -24,8 +25,8 @@ public class PlayerController : MonoBehaviour
         count = 0;
         
         SetCountText();
-        winTextObject.SetActive(false);
-        lostTextObject.SetActive(false);
+        winText.SetActive(false);
+      
     }
 
     private void OnMove(InputValue movementValue)
@@ -41,7 +42,7 @@ public class PlayerController : MonoBehaviour
         countText.text = "Score: " + count.ToString();
         if (count >= 12)
         {
-            winTextObject.SetActive(true);
+            winText.SetActive(true);
         }
     }
 
@@ -54,16 +55,20 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter(Collider other) 
     {
+
+
         if (other.gameObject.CompareTag("PickUp"))
         {
             other.gameObject.SetActive(false);
             count++;
             SetCountText();
         }
+
         if (other.gameObject.CompareTag("Lava"))
         {
-            winTextObject.GetComponent<UnityEngine.UI.Text>().text = "You Lose!"; //hmmmmm
-            winTextObject.SetActive(true);
+            loseText.text = "You Lose!";
+            winText.GetComponent<TextMeshProUGUI>().text = loseText.text;
+            winText.SetActive(true);
         }
         
     }
